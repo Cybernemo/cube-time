@@ -9,6 +9,15 @@
 #define OLED_RESET 0  // GPIO0
 Adafruit_SSD1306 display(OLED_RESET);
 
+unsigned long front_time = 0;
+unsigned long back_time = 0;
+unsigned long left_time = 0;
+unsigned long right_time = 0;
+unsigned long up_time = 0;
+unsigned long down_time = 0;
+unsigned long ms_time = 0;
+unsigned long cycle_time = 0;
+
 MPU9250 myIMU;
 
 #define SerialDebug true  // Set to true to get Serial output for debugging
@@ -20,10 +29,14 @@ void setup() {
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 64x48)
   display.clearDisplay();
   myIMU.initMPU9250();
+  
+
 
 }
 
 void loop() {
+  cycle_time = millis() - ms_time; 
+  ms_time = millis();
   
   myIMU.readByte(MPU9250_ADDRESS, INT_STATUS);
   myIMU.readAccelData(myIMU.accelCount);  // Read the x/y/z adc values
@@ -37,10 +50,13 @@ void loop() {
 
   display.setTextSize(1.5);
   display.setTextColor(WHITE);
-  display.setCursor(30,24);
+  display.setCursor(0,24);
   float acc = 0.8;
   if(myIMU.az > acc){
+    up_time = up_time + cycle_time;
     display.print("UP");
+    display.setCursor(0,24);
+    display.print(up_time/1000 + " seconds");
   }else if(myIMU.az < -acc){
     display.print("DOWN");
   }else if(myIMU.ay > acc){
@@ -61,18 +77,7 @@ void loop() {
   display.clearDisplay();
 
   // Print acceleration values in milligs!
-  Serial.print("X-acceleration: "); Serial.print(1000*myIMU.ax);
-  Serial.print(" mg ");
-  Serial.print("Y-acceleration: "); Serial.print(1000*myIMU.ay);
-  Serial.print(" mg ");
-  Serial.print("Z-acceleration: "); Serial.print(1000*myIMU.az);
-  Serial.println(" mg ");
-  
-  Serial.println("  ");
-  
-       
-
-  //delay(2000);
-  //display.clearDisplay();
+//  Serial.print("X-acceleration: "); Serial.print(1000*myIMU.ax);
+//  Serial.print(" mg ");
 
 }
