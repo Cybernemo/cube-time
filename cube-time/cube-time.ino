@@ -50,23 +50,38 @@ void loop() {
 
   display.setTextSize(1.5);
   display.setTextColor(WHITE);
-  display.setCursor(0,24);
+  display.setCursor(0,0);
   float acc = 0.8;
   if(myIMU.az > acc){
     up_time = up_time + cycle_time;
-    display.print("UP");
-    display.setCursor(0,24);
-    display.print(up_time/1000 + " seconds");
+    display.println("UP");
+    display.println(up_time/60000);
+    display.print("minutes");
   }else if(myIMU.az < -acc){
-    display.print("DOWN");
+    down_time = down_time + cycle_time;
+    display.println("DOWN");
+    display.println(down_time/60000);
+    display.print("minutes");
   }else if(myIMU.ay > acc){
-    display.print("FRONT");
+    front_time = front_time + cycle_time;
+    display.println("FRONT");
+    display.println(front_time/60000);
+    display.print("minutes");
   }else if(myIMU.ay < -acc){
-    display.print("BACK");
+    back_time = back_time + cycle_time;
+    display.println("BACK");
+    display.println(back_time/60000);
+    display.print("minutes");
   }else if(myIMU.ax > acc){
-    display.print("LEFT");
+    left_time = left_time + cycle_time;
+    display.println("LEFT");
+    display.println(left_time/60000);
+    display.print("minutes");
   }else if(myIMU.ax < -acc){
-    display.print("RIGHT");
+    right_time = right_time + cycle_time;
+    display.println("RIGHT");
+    display.println(right_time/60000);
+    display.print("minutes");
   }else{
     display.setCursor(0,24);
     display.print("NOT A FACE");
