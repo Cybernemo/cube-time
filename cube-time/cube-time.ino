@@ -37,7 +37,7 @@ void setup() {
 void loop() {
   cycle_time = millis() - ms_time; 
   ms_time = millis();
-  
+
   myIMU.readByte(MPU9250_ADDRESS, INT_STATUS);
   myIMU.readAccelData(myIMU.accelCount);  // Read the x/y/z adc values
   myIMU.getAres();
@@ -47,6 +47,7 @@ void loop() {
   myIMU.ax = (float)myIMU.accelCount[0]*myIMU.aRes; // - accelBias[0];
   myIMU.ay = (float)myIMU.accelCount[1]*myIMU.aRes; // - accelBias[1];
   myIMU.az = (float)myIMU.accelCount[2]*myIMU.aRes; // - accelBias[2];
+ 
 
   display.setTextSize(1.5);
   display.setTextColor(WHITE);
@@ -96,3 +97,8 @@ void loop() {
 //  Serial.print(" mg ");
 
 }
+
+int face_detection(MPU9250 mpu){
+
+}
+
